@@ -2,12 +2,12 @@ apply plugin: 'com.android.application'
 apply plugin: 'org.greenrobot.greendao'
 
 android {
-    compileSdkVersion 25
-    buildToolsVersion rootProject.ext.buildToolsVersion
+    compileSdkVersion build_versions.target_sdk
+    buildToolsVersion build_versions.tools_version
     defaultConfig {
         applicationId "com.example.newbiechen.ireader"
-        minSdkVersion rootProject.ext.minSdkVersion
-        targetSdkVersion rootProject.ext.targetSdkVersion
+        minSdkVersion build_versions.min_sdk
+        targetSdkVersion build_versions.target_sdk
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
@@ -40,37 +40,40 @@ repositories {
 
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
-    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
+    androidTestImplementation('com.android.support.test.espresso:espresso-core:3.0.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
-    implementation "com.android.support:appcompat-v7:$rootProject.supportLibraryVersion"
-    implementation "com.android.support:design:$rootProject.supportLibraryVersion"
-    implementation "com.android.support:support-v4:$rootProject.supportLibraryVersion"
-    implementation "com.android.support:cardview-v7:$rootProject.supportLibraryVersion"
-    // View injection
-    implementation "com.jakewharton:butterknife:$rootProject.butterknifeVersion"
-    annotationProcessor "com.jakewharton:butterknife-compiler:$rootProject.butterknifeVersion"
-    // RxJava
-    implementation "io.reactivex.rxjava2:rxandroid:$rootProject.rxandroidVersion"
-    implementation "io.reactivex.rxjava2:rxjava:$rootProject.rxjavaVersion"
-    // NetWork
-    implementation "com.squareup.okhttp3:okhttp:$rootProject.okhttpVersion"
-    implementation "com.squareup.okio:okio:$rootProject.okioVersion"
-    implementation "com.squareup.retrofit2:retrofit:$rootProject.retrofitVersion"
-    implementation "com.squareup.retrofit2:converter-gson:$rootProject.retrofitVersion"
-    implementation "com.squareup.retrofit2:adapter-rxjava2:$rootProject.retrofitVersion"
-    // ImageLoader
-    implementation "com.github.bumptech.glide:glide:$rootProject.glideVersion"
-    // ORM Database
-    implementation "org.greenrobot:greendao:$rootProject.greendaoVersion"
-    testImplementation "junit:junit:$rootProject.junitVersion"
+
+    implementation deps.android.appcompat
+    implementation deps.android.design
+    implementation deps.android.support
+    implementation deps.android.cardview
+    //View injection
+    implementation deps.butterknife.runtime
+    annotationProcessor deps.butterknife.compiler
+    //RxJava
+    implementation deps.reactivex.rxandroid
+    implementation deps.reactivex.rxjava2
+    //NetWork
+    implementation deps.okhttp.runtime
+
+    implementation deps.retrofit.runtime
+    implementation deps.retrofit.gson
+    implementation deps.retrofit.rxjava2
+    //ImageLoader
+    implementation deps.glide.runtime
+    /*implementation deps.glide.compiler*/
+    //ORM Database
+    implementation deps.greendao.runtime
+    testImplementation deps.testing.junit
+
+    // Android Leak Analysis
+    releaseImplementation deps.leakcanary.release
+    debugImplementation deps.leakcanary.debug
 
     // OpenCC to convert Simp. Chinese to Trad. Chinese
     implementation "com.zqc.opencc.android.lib:lib-opencc-android:0.8.0@aar"
 
     // AndroidTagGroup
     implementation 'me.gujun.android.taggroup:library:1.4@aar'
-    // Android Leak Analysis
-    releaseImplementation 'com.squareup.leakcanary:leakcanary-android-no-op:1.5.4'
-    debugImplementation 'com.squareup.leakcanary:leakcanary-android:1.5.4'
 }
